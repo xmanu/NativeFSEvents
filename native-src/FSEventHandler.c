@@ -9,13 +9,11 @@
 #include <stdio.h>
 #include "FSEventHandler.h"
 
-CFArrayRef get_paths_array(const char **paths, int num_paths);
-
 FSEventStreamRef monitor_paths(CFArrayRef paths, FSEventStreamCallback callback)
 {
     void *callbackInfo = NULL; // could put stream-specific data here.
     FSEventStreamRef stream;
-    CFAbsoluteTime latency = 1.0; /* Latency in seconds */
+    CFAbsoluteTime latency = 0.2; /* Latency in seconds */
     
     /* Create the stream, passing in a callback */
     stream = FSEventStreamCreate(NULL,
@@ -24,7 +22,7 @@ FSEventStreamRef monitor_paths(CFArrayRef paths, FSEventStreamCallback callback)
                                  paths,
                                  kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
                                  latency,
-                                 kFSEventStreamCreateFlagNoDefer /* Flags explained in reference */
+                                 kFSEventStreamCreateFlagNoDefer | kFSEventStreamCreateFlagIgnoreSelf /* Flags explained in reference */
                                  );
     
     FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
@@ -38,13 +36,4 @@ void unmonitor(FSEventStreamRef stream)
     FSEventStreamUnscheduleFromRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
     FSEventStreamInvalidate(stream);
     FSEventStreamRelease(stream);
-}
-
-CFArrayRef get_paths_array(const char **paths, int num_paths)
-{
-    CFStringRef *mypaths = malloc(sizeof(CFStringRef) * num_paths);
-    for (int i = 0; i < num_paths; i++) {
-        mypaths[i] = CFStringCreateWithCString(kCFAllocatorDefault, paths[i], kCFStringEncodingUTF8);
-    }
-    return CFArrayCreate(NULL, (const void **)mypaths, 1, NULL);
 }
