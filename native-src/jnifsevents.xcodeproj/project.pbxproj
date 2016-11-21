@@ -7,16 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		644AF3B91DE2FCD300FC3497 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 644AF3B81DE2FCD300FC3497 /* CoreFoundation.framework */; };
+		644AF3BB1DE2FCD900FC3497 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 644AF3BA1DE2FCD900FC3497 /* CoreServices.framework */; };
+		644AF3BD1DE2FCDE00FC3497 /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 644AF3BC1DE2FCDE00FC3497 /* JavaVM.framework */; };
 		8E4B7DB4149B34B600BDD05F /* NativeFSEvents.c in Sources */ = {isa = PBXBuildFile; fileRef = 8E4B7DB3149B34B600BDD05F /* NativeFSEvents.c */; };
-		8E9AFBB014A37D470080F830 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E9AFBAD14A37D470080F830 /* CoreFoundation.framework */; };
-		8E9AFBB114A37D470080F830 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E9AFBAE14A37D470080F830 /* CoreServices.framework */; };
-		8E9AFBB214A37D470080F830 /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E9AFBAF14A37D470080F830 /* JavaVM.framework */; };
 		8EA870F2149A343E003D42E7 /* FSEventHandler.c in Sources */ = {isa = PBXBuildFile; fileRef = 8EA870F1149A343E003D42E7 /* FSEventHandler.c */; };
 		8EA870F5149A348B003D42E7 /* FSEventHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EA870F4149A348B003D42E7 /* FSEventHandler.h */; };
 		8EA870FA149B3445003D42E7 /* org_vaadin_jonatan_nativefsevents_NativeFSEvents.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EA870F8149B3445003D42E7 /* org_vaadin_jonatan_nativefsevents_NativeFSEvents.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		644AF3B81DE2FCD300FC3497 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		644AF3BA1DE2FCD900FC3497 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		644AF3BC1DE2FCDE00FC3497 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = System/Library/Frameworks/JavaVM.framework; sourceTree = SDKROOT; };
 		8E4B7DB3149B34B600BDD05F /* NativeFSEvents.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = NativeFSEvents.c; path = jnifsevents.xcodeproj/../NativeFSEvents.c; sourceTree = "<group>"; };
 		8E9AFBAD14A37D470080F830 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		8E9AFBAE14A37D470080F830 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/CoreServices.framework; sourceTree = DEVELOPER_DIR; };
@@ -32,15 +35,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8E9AFBB014A37D470080F830 /* CoreFoundation.framework in Frameworks */,
-				8E9AFBB114A37D470080F830 /* CoreServices.framework in Frameworks */,
-				8E9AFBB214A37D470080F830 /* JavaVM.framework in Frameworks */,
+				644AF3BD1DE2FCDE00FC3497 /* JavaVM.framework in Frameworks */,
+				644AF3BB1DE2FCD900FC3497 /* CoreServices.framework in Frameworks */,
+				644AF3B91DE2FCD300FC3497 /* CoreFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		644AF3B71DE2FCD300FC3497 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				644AF3BC1DE2FCDE00FC3497 /* JavaVM.framework */,
+				644AF3BA1DE2FCD900FC3497 /* CoreServices.framework */,
+				644AF3B81DE2FCD300FC3497 /* CoreFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8EA870D7149A326A003D42E7 = {
 			isa = PBXGroup;
 			children = (
@@ -52,6 +65,7 @@
 				8EA870F4149A348B003D42E7 /* FSEventHandler.h */,
 				8EA870F1149A343E003D42E7 /* FSEventHandler.c */,
 				8EA870E3149A326A003D42E7 /* Products */,
+				644AF3B71DE2FCD300FC3497 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,7 +115,7 @@
 		8EA870D9149A326A003D42E7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = n/a;
 			};
 			buildConfigurationList = 8EA870DC149A326A003D42E7 /* Build configuration list for PBXProject "jnifsevents" */;
@@ -142,14 +156,18 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -164,7 +182,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "/Library/Java/JavaVirtualMachines/jdk1.7.0_72.jdk/Contents/Home/include/**";
+				HEADER_SEARCH_PATHS = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/JavaVM.framework/Headers/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -183,7 +201,9 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
@@ -191,6 +211,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -199,7 +220,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "/Library/Java/JavaVirtualMachines/jdk1.7.0_72.jdk/Contents/Home/include/**";
+				HEADER_SEARCH_PATHS = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/JavaVM.framework/Headers/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = (
 					"-framework",

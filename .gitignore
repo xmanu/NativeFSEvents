@@ -3,3 +3,6 @@
 .settings/
 bin/
 xcuserdata
+/native-src/build
+/out
+/.idea/workspace.xml

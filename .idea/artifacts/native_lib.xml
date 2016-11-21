@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="native-lib">
+    <output-path>$PROJECT_DIR$/native-src/build/Release</output-path>
+    <properties id="ant-preprocessing">
+      <options enabled="true">
+        <file>file://$PROJECT_DIR$/nativefsevents.xml</file>
+        <target>compile.artifact.native-lib</target>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="module-output" name="NativeFSEvents" />
+    </root>
+  </artifact>
+</component>
