@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_nativefsevents" default="compile.module.nativefsevents">
+  <dirname property="module.nativefsevents.basedir" file="${ant.file.module_nativefsevents}"/>
+  
+  <property name="module.jdk.home.nativefsevents" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.nativefsevents" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.nativefsevents" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.nativefsevents" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="nativefsevents.output.dir" value="${module.nativefsevents.basedir}/out/production/NativeFSEvents"/>
+  <property name="nativefsevents.testoutput.dir" value="${module.nativefsevents.basedir}/out/test/NativeFSEvents"/>
+  
+  <path id="nativefsevents.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="nativefsevents.module.production.classpath">
+    <path refid="${module.jdk.classpath.nativefsevents}"/>
+    
+  </path>
+  
+  <path id="nativefsevents.runtime.production.module.classpath">
+    <pathelement location="${nativefsevents.output.dir}"/>
+    
+  </path>
+  
+  <path id="nativefsevents.module.classpath">
+    <path refid="${module.jdk.classpath.nativefsevents}"/>
+    <pathelement location="${nativefsevents.output.dir}"/>
+    
+  </path>
+  
+  <path id="nativefsevents.runtime.module.classpath">
+    <pathelement location="${nativefsevents.testoutput.dir}"/>
+    <pathelement location="${nativefsevents.output.dir}"/>
+    
+  </path>
+  
+  
+  <patternset id="excluded.from.module.nativefsevents">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.nativefsevents">
+    <patternset refid="excluded.from.module.nativefsevents"/>
+  </patternset>
+  
+  <path id="nativefsevents.module.sourcepath">
+    <dirset dir="${module.nativefsevents.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  <path id="nativefsevents.module.test.sourcepath">
+    <dirset dir="${module.nativefsevents.basedir}">
+      <include name="test"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.nativefsevents" depends="compile.module.nativefsevents.production,compile.module.nativefsevents.tests" description="Compile module NativeFSEvents"/>
+  
+  <target name="compile.module.nativefsevents.production" description="Compile module NativeFSEvents; production classes">
+    <mkdir dir="${nativefsevents.output.dir}"/>
+    <javac destdir="${nativefsevents.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.nativefsevents}/javac">
+      <compilerarg line="${compiler.args.nativefsevents}"/>
+      <bootclasspath refid="nativefsevents.module.bootclasspath"/>
+      <classpath refid="nativefsevents.module.production.classpath"/>
+      <src refid="nativefsevents.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.nativefsevents"/>
+    </javac>
+    
+    <copy todir="${nativefsevents.output.dir}">
+      <fileset dir="${module.nativefsevents.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.nativefsevents.tests" depends="compile.module.nativefsevents.production" description="compile module NativeFSEvents; test classes" unless="skip.tests">
+    <mkdir dir="${nativefsevents.testoutput.dir}"/>
+    <javac destdir="${nativefsevents.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.nativefsevents}/javac">
+      <compilerarg line="${compiler.args.nativefsevents}"/>
+      <bootclasspath refid="nativefsevents.module.bootclasspath"/>
+      <classpath refid="nativefsevents.module.classpath"/>
+      <src refid="nativefsevents.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.nativefsevents"/>
+    </javac>
+    
+    <copy todir="${nativefsevents.testoutput.dir}">
+      <fileset dir="${module.nativefsevents.basedir}/test">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.nativefsevents" description="cleanup module">
+    <delete dir="${nativefsevents.output.dir}"/>
+    <delete dir="${nativefsevents.testoutput.dir}"/>
+  </target>
+</project>

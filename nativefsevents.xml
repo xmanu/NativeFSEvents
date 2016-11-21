@@ -101,93 +101,7 @@
   
   <!-- Modules -->
   
-  
-  <!-- Module NativeFSEvents -->
-  
-  <dirname property="module.nativefsevents.basedir" file="${ant.file}"/>
-  
-  
-  <property name="module.jdk.home.nativefsevents" value="${project.jdk.home}"/>
-  <property name="module.jdk.bin.nativefsevents" value="${project.jdk.bin}"/>
-  <property name="module.jdk.classpath.nativefsevents" value="${project.jdk.classpath}"/>
-  
-  <property name="compiler.args.nativefsevents" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
-  
-  <property name="nativefsevents.output.dir" value="${module.nativefsevents.basedir}/out/production/NativeFSEvents"/>
-  <property name="nativefsevents.testoutput.dir" value="${module.nativefsevents.basedir}/out/test/NativeFSEvents"/>
-  
-  <path id="nativefsevents.module.bootclasspath">
-    <!-- Paths to be included in compilation bootclasspath -->
-  </path>
-  
-  <path id="nativefsevents.module.production.classpath">
-    <path refid="${module.jdk.classpath.nativefsevents}"/>
-    
-  </path>
-  
-  <path id="nativefsevents.runtime.production.module.classpath">
-    <pathelement location="${nativefsevents.output.dir}"/>
-    
-  </path>
-  
-  <path id="nativefsevents.module.classpath">
-    <path refid="${module.jdk.classpath.nativefsevents}"/>
-    <pathelement location="${nativefsevents.output.dir}"/>
-    
-  </path>
-  
-  <path id="nativefsevents.runtime.module.classpath">
-    <pathelement location="${nativefsevents.testoutput.dir}"/>
-    <pathelement location="${nativefsevents.output.dir}"/>
-    
-  </path>
-  
-  
-  <patternset id="excluded.from.module.nativefsevents">
-    <patternset refid="ignored.files"/>
-  </patternset>
-  
-  <patternset id="excluded.from.compilation.nativefsevents">
-    <patternset refid="excluded.from.module.nativefsevents"/>
-  </patternset>
-  
-  <path id="nativefsevents.module.sourcepath">
-    <dirset dir="${module.nativefsevents.basedir}">
-      <include name="src"/>
-    </dirset>
-  </path>
-  
-  
-  <target name="compile.module.nativefsevents" depends="compile.module.nativefsevents.production,compile.module.nativefsevents.tests" description="Compile module NativeFSEvents"/>
-  
-  <target name="compile.module.nativefsevents.production" description="Compile module NativeFSEvents; production classes">
-    <mkdir dir="${nativefsevents.output.dir}"/>
-    <javac destdir="${nativefsevents.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.nativefsevents}/javac">
-      <compilerarg line="${compiler.args.nativefsevents}"/>
-      <bootclasspath refid="nativefsevents.module.bootclasspath"/>
-      <classpath refid="nativefsevents.module.production.classpath"/>
-      <src refid="nativefsevents.module.sourcepath"/>
-      <patternset refid="excluded.from.compilation.nativefsevents"/>
-    </javac>
-    
-    <copy todir="${nativefsevents.output.dir}">
-      <fileset dir="${module.nativefsevents.basedir}/src">
-        <patternset refid="compiler.resources"/>
-        <type type="file"/>
-      </fileset>
-    </copy>
-  </target>
-  
-  <target name="compile.module.nativefsevents.tests" depends="compile.module.nativefsevents.production" description="compile module NativeFSEvents; test classes" unless="skip.tests"/>
-  
-  <target name="clean.module.nativefsevents" description="cleanup module">
-    <delete dir="${nativefsevents.output.dir}"/>
-    <delete dir="${nativefsevents.testoutput.dir}"/>
-  </target>
-
-  <target name="clean.artifact.native-lib" description="cleanup module">
-    <delete dir="${module.nativefsevents.basedir}/native-src/build"/>
-  </target>
+  <import file="${basedir}/module_nativefsevents.xml"/>
   
   <target name="init" description="Build initialization">
     <!-- Perform any build initialization in this target -->
@@ -195,13 +109,25 @@
   
   <target name="clean" depends="clean.module.nativefsevents, clean.artifact.native-lib" description="cleanup all"/>
   
-  <target name="build.modules" depends="init, clean, compile.artifact.native-lib, compile.module.nativefsevents" description="build all modules"/>
+  <target name="build.modules" depends="init, clean, compile.module.nativefsevents" description="build all modules"/>
   
-  <target name="all" depends="build.modules" description="build all"/>
-
-  <target name="compile.artifact.native-lib">
-    <echo message="Building release build of native lib" />
-    <exec dir="${module.nativefsevents.basedir}/native-src" executable="xcodebuild" os="Mac OS X">
-    </exec>
+  <target name="init.artifacts">
+    <property name="artifact.output.native-lib" value="${basedir}/native-src/build/Release"/>
   </target>
+  
+  <target name="clean.artifact.native-lib" depends="init.artifacts" description="clean native-lib artifact output">
+    <delete dir="${artifact.output.native-lib}"/>
+  </target>
+  
+  <target name="artifact.native-lib" depends="init.artifacts" description="Build &#39;native-lib&#39; artifact">
+    <mkdir dir="${artifact.output.native-lib}"/>
+    <ant antfile="native-lib.xml" target="compile.artifact.native-lib" dir="${basedir}">
+      <property name="artifact.output.path" value="${artifact.output.native-lib}"/>
+    </ant>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.native-lib" description="Build all artifacts">
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
 </project>

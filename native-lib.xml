@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="native-lib" default="compile.artifact.native-lib">
+
+
+    <!-- Global Libraries -->
+
+    <!-- Modules -->
+
+
+    <!-- Module NativeFSEvents -->
+
+    <dirname property="module.nativefsevents.basedir" file="${ant.file}"/>
+
+    <target name="clean.artifact.native-lib" description="cleanup module">
+        <delete dir="${module.nativefsevents.basedir}/native-src/build"/>
+    </target>
+
+    <target name="compile.artifact.native-lib">
+        <echo message="Building release build of native lib" />
+        <exec dir="${module.nativefsevents.basedir}/native-src" executable="xcodebuild" os="Mac OS X">
+        </exec>
+    </target>
+</project>

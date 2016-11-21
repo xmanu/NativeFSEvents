@@ -3,12 +3,10 @@
     <output-path>$PROJECT_DIR$/native-src/build/Release</output-path>
     <properties id="ant-preprocessing">
       <options enabled="true">
-        <file>file://$PROJECT_DIR$/nativefsevents.xml</file>
+        <file>file://$PROJECT_DIR$/native-lib.xml</file>
         <target>compile.artifact.native-lib</target>
       </options>
     </properties>
-    <root id="root">
-      <element id="module-output" name="NativeFSEvents" />
-    </root>
+    <root id="root" />
   </artifact>
 </component>
