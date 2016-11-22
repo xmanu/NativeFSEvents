@@ -48,10 +48,11 @@ void fs_callback(ConstFSEventStreamRef streamRef,
     LOG("fs_callback()\n");
 
     (*jvm)->AttachCurrentThread(jvm, (void **)&env, NULL);
-    jmethodID java_callback = (*env)->GetStaticMethodID(env, gClass, "eventCallback", "(Ljava/lang/String;)V");
+    jmethodID java_callback = (*env)->GetStaticMethodID(env, gClass, "eventCallback", "(Ljava/lang/String;Z)V");
     for (i=0; i<numEvents; i++) {
         jstring path = (*env)->NewStringUTF(env, paths[i]);
-        (*env)->CallStaticVoidMethod(env, gClass, java_callback, path);
+        jboolean own = (eventFlags[i] & kFSEventStreamEventFlagOwnEvent) ? true : false;
+        (*env)->CallStaticVoidMethod(env, gClass, java_callback, path, own);
     }
     (*jvm)->DetachCurrentThread(jvm);
 }
@@ -62,6 +63,8 @@ static dispatch_queue_t install_queue;
 static dispatch_queue_t monitor_queue;
 static dispatch_semaphore_t monitor_semaphore;
 static dispatch_semaphore_t monitored_paths_semaphore;
+Boolean trackFiles;
+Boolean ignoreSelf;
 
 CFStringRef to_cfstring(JNIEnv *env, jstring path) {
     const char *cpath = (*env)->GetStringUTFChars(env, path, NULL);
@@ -115,7 +118,7 @@ void install_monitor(CFArrayRef paths)
                     LOG("install_monitor(%i): not expecting a runloop to exist here!\n", mycounter);
                 }
                 
-                FSEventStreamRef streamRef = monitor_paths(paths, &fs_callback);
+                FSEventStreamRef streamRef = monitor_paths(paths, trackFiles, ignoreSelf, &fs_callback);
                 CFRelease(paths);
                 
                 monitor_runloop = CFRunLoopGetCurrent();
@@ -210,6 +213,18 @@ JNIEXPORT void JNICALL Java_org_vaadin_jonatan_nativefsevents_NativeFSEvents_unm
     }
 }
 
+JNIEXPORT void JNICALL Java_org_vaadin_jonatan_nativefsevents_NativeFSEvents_monitorFiles(JNIEnv *env, jclass class, jboolean monitorFiles)
+{
+    trackFiles = monitorFiles;
+    LOG("monitorFiles(%d)\n", trackFiles);
+}
+
+JNIEXPORT void JNICALL Java_org_vaadin_jonatan_nativefsevents_NativeFSEvents_ignoreSelf(JNIEnv *env, jclass class, jboolean ignSelf)
+{
+    ignoreSelf = ignSelf;
+    LOG("ignoreSelf(%d)\n", ignoreSelf);
+}
+
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
 {
     LOG("JNI_OnLoad()\n");
@@ -218,6 +233,8 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved)
     monitor_queue = dispatch_queue_create("jnifsevents-monitor", DISPATCH_QUEUE_SERIAL);
     monitor_semaphore = dispatch_semaphore_create(1L);
     monitored_paths_semaphore = dispatch_semaphore_create(1L);
+    trackFiles = false;
+    ignoreSelf = true;
     
     jvm = vm;
     JNIEnv *env;

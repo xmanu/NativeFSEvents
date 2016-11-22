@@ -18,11 +18,13 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 public class DemoApp {
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        NativeFSEvents.monitorFiles(true);
+        NativeFSEvents.ignoreSelf(false);
         System.out.println(Paths.get("").toAbsolutePath().toString());
         NativeFSEvents nativeEvents = new NativeFSEvents("/", new NativeFSEvents.NativeFSEventListener() {
             @Override
-            public void pathModified(String path) {
-                System.out.println(path);
+            public void pathModified(String path, boolean own) {
+                System.out.println(own + ": " + path);
             }
         });
         nativeEvents.startMonitoring();

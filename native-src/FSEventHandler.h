@@ -11,7 +11,7 @@
 
 #include <CoreServices/CoreServices.h>
 
-FSEventStreamRef monitor_paths(CFArrayRef paths, FSEventStreamCallback callback);
+FSEventStreamRef monitor_paths(CFArrayRef paths, Boolean trackFiles, Boolean ignoreSelf, FSEventStreamCallback callback);
 void unmonitor(FSEventStreamRef stream);
 
 #endif

@@ -5,13 +5,16 @@ import java.util.Map.Entry;
 
 public class NativeFSEvents {
 	private final String path;
-	private NativeFSEventListener listener;
+	private final NativeFSEventListener listener;
 
 	private static native void monitor(String path);
 	private static native void unmonitor(String path);
 
+    public static native void monitorFiles(boolean monitorFiles);
+    public static native void ignoreSelf(boolean ignoreSelf);
+
 	private static HashMap<String, NativeFSEventListener> pathToListener = new HashMap<String, NativeFSEventListener>();
-	
+
 	static {
 		System.loadLibrary("nativefsevents");
 	}
@@ -31,19 +34,19 @@ public class NativeFSEvents {
 		pathToListener.remove(path);
 	}
 	
-	public static void eventCallback(String path) {
+	public static void eventCallback(String path, boolean own) {
 		if (path == null) {
 			return;
 		}
 
 		for (Entry<String, NativeFSEventListener> entry : pathToListener.entrySet()) {
 			if (path.startsWith(entry.getKey())) {
-				entry.getValue().pathModified(path);
+				entry.getValue().pathModified(path, own);
 			}
 		}
 	}
 	
 	public interface NativeFSEventListener {
-		public void pathModified(String path);
+		public void pathModified(String path, boolean own);
 	}
 }

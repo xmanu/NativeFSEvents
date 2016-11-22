@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include "FSEventHandler.h"
 
-FSEventStreamRef monitor_paths(CFArrayRef paths, FSEventStreamCallback callback)
+FSEventStreamRef monitor_paths(CFArrayRef paths, Boolean trackFiles, Boolean ignoreSelf, FSEventStreamCallback callback)
 {
     void *callbackInfo = NULL; // could put stream-specific data here.
     FSEventStreamRef stream;
@@ -22,7 +22,7 @@ FSEventStreamRef monitor_paths(CFArrayRef paths, FSEventStreamCallback callback)
                                  paths,
                                  kFSEventStreamEventIdSinceNow, /* Or a previous event ID */
                                  latency,
-                                 kFSEventStreamCreateFlagNoDefer | kFSEventStreamCreateFlagIgnoreSelf /* Flags explained in reference */
+                                 kFSEventStreamCreateFlagNoDefer | (ignoreSelf ? kFSEventStreamCreateFlagIgnoreSelf : 0) | kFSEventStreamCreateFlagMarkSelf | (trackFiles ? kFSEventStreamCreateFlagFileEvents : 0) /* Flags explained in reference */
                                  );
     
     FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
